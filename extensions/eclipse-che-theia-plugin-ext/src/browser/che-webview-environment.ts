@@ -40,6 +40,8 @@ export class CheWebviewEnvironment extends WebviewEnvironment {
         (webviewExternalEndpointPattern && webviewExternalEndpointPattern.value) ||
         webviewDomain ||
         WebviewExternalEndpoint.pattern;
+      console.log('>>>>>>>>>>>>>>>> CheWebviewEnvironment hostName pattern: ' + hostName);
+      console.log('>>>>>>>>>>>>>>>> CheWebviewEnvironment hostName value: ' + window.location.host || 'localhost');
       this.externalEndpointHost.resolve(hostName.replace('{{hostname}}', window.location.host || 'localhost'));
     } catch (e) {
       this.externalEndpointHost.reject(e);
