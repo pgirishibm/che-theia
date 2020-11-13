@@ -50,7 +50,8 @@ export class WebviewsContentAware {
         WebviewsContentAware.modifyWebviewOptions(options),
         plugin
       );
-      const originalAsWebviewUri = webviewPanel.webview.asWebviewUri.bind(webviewPanel);
+      const webview: theia.Webview = webviewPanel.webview;
+      const originalAsWebviewUri = webview.asWebviewUri.bind(webview);
       const asWebviewUri = (localResource: Uri) => {
         console.log('>>>>>>>>> modify method asWebviewUri');
         return originalAsWebviewUri(overrideUri(localResource));
