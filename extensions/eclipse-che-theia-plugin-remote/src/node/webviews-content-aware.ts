@@ -10,28 +10,56 @@
 
 import * as theia from '@theia/plugin';
 
+import { WebviewImpl, WebviewsExtImpl } from '@theia/plugin-ext/lib/plugin/webviews';
+
 import { Plugin } from '@theia/plugin-ext/src/common/plugin-api-rpc';
-import { WebviewsExtImpl } from '@theia/plugin-ext/lib/plugin/webviews';
+import { Uri } from '@theia/plugin';
 import { overrideUri } from './che-content-aware-utils';
+
+export class RemoteWebview extends WebviewImpl {}
 
 export class WebviewsContentAware {
   static makeWebviewsContentAware(webviewExt: WebviewsExtImpl): void {
     const webviewsContentAware = new WebviewsContentAware();
-    console.log('>>>>>>>>>>>>>>>> WebviewsContentAware create')
+    console.log('>>>>>>>>>>>>>>>> WebviewsContentAware create');
     webviewsContentAware.overrideCreateWebview(webviewExt);
   }
 
   overrideCreateWebview(webviewExt: WebviewsExtImpl): void {
     console.log('>>>>>>>>>>>>>>>> overrideCreateWebview call');
     const originalCreateWebview = webviewExt.createWebview.bind(webviewExt);
+    // const createWebview = (
+    //   viewType: string,
+    //   title: string,
+    //   showOptions: theia.ViewColumn | theia.WebviewPanelShowOptions,
+    //   options: theia.WebviewPanelOptions & theia.WebviewOptions,
+    //   plugin: Plugin
+    // ) =>
+    //   originalCreateWebview(viewType, title, showOptions, WebviewsContentAware.modifyWebviewOptions(options), plugin);
     const createWebview = (
       viewType: string,
       title: string,
       showOptions: theia.ViewColumn | theia.WebviewPanelShowOptions,
       options: theia.WebviewPanelOptions & theia.WebviewOptions,
       plugin: Plugin
-    ) =>
-      originalCreateWebview(viewType, title, showOptions, WebviewsContentAware.modifyWebviewOptions(options), plugin);
+    ) => {
+      const webviewPanel: theia.WebviewPanel = originalCreateWebview(
+        viewType,
+        title,
+        showOptions,
+        WebviewsContentAware.modifyWebviewOptions(options),
+        plugin
+      );
+      const originalAsWebviewUri = webviewPanel.webview.asWebviewUri.bind(webviewPanel);
+      const asWebviewUri = (localResource: Uri) => {
+        console.log('>>>>>>>>> modify method asWebviewUri');
+        return originalAsWebviewUri(overrideUri(localResource));
+      };
+
+      webviewPanel.webview.asWebviewUri = asWebviewUri;
+
+      return webviewPanel;
+    };
     webviewExt.createWebview = createWebview;
   }
 
