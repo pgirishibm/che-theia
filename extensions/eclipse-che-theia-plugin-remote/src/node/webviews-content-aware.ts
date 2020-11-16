@@ -63,7 +63,7 @@ export class WebviewsContentAware {
           if (machineName) {
             console.log('++++++++++++++ perform replacing with machine name');
             // @ts-ignore
-            this._html = value.replace(/(?:vscode|theia)-resource:/gi, `file-sidecar-${machineName}`);
+            this._html = value.replace(/(?:vscode|theia)-resource:/gi, `file-sidecar-${machineName}:`);
           } else {
             console.log('++++++++++++++ left html value as is');
             // @ts-ignore
