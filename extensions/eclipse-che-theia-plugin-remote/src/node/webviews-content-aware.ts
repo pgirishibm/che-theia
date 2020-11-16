@@ -51,6 +51,29 @@ export class WebviewsContentAware {
         plugin
       );
       const webview: theia.Webview = webviewPanel.webview;
+
+      Object.defineProperty(webview, '_html', {
+        get: function () {
+          // @ts-ignore
+          return this._html;
+        }.bind(this),
+        set: function (value: string) {
+          console.log('+++++++++++++++ incoming value: ' + value);
+          const machineName = process.env.CHE_MACHINE_NAME;
+          if (machineName) {
+            console.log('++++++++++++++ perform replacing with machine name');
+            // @ts-ignore
+            this._html = value.replace(/(?:vscode|theia)-resource:/gi, `file-sidecar-${machineName}`);
+          } else {
+            console.log('++++++++++++++ left html value as is');
+            // @ts-ignore
+            this._html = value;
+          }
+          // @ts-ignore
+          console.log('+++++++++++++++ set html: ' + this._html);
+        }.bind(this),
+      });
+
       const originalAsWebviewUri = webview.asWebviewUri.bind(webview);
       const asWebviewUri = (localResource: Uri) => {
         console.log('>>>>>>>>> modify method asWebviewUri');
