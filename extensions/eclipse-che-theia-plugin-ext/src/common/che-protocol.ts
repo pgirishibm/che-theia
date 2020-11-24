@@ -138,6 +138,20 @@ export interface CheSideCarContentReaderMain {
   $registerContentReader(scheme: string): Promise<void>;
 }
 
+export interface CheSideCarFileSystem {
+  $mkdir(resource: string): Promise<void>;
+  $readdir(resource: string): Promise<[string, string][]>; // replace second string with FileType
+  $delete(resource: string, opts: { recursive: boolean; useTrash: boolean }): Promise<void>;
+  $rename(from: string, to: string, opts: { overwrite: boolean }): Promise<void>;
+  $readFile(resource: string): Promise<Uint8Array>;
+  $writeFile(resource: string, content: Uint8Array, opts: { overwrite: boolean; create: boolean }): Promise<void>;
+}
+
+export interface CheSideCarFileSystemMain {
+  $registerFileSystemProvider(scheme: string): Promise<void>;
+  $disposeFileSystemProvider(scheme: string): Promise<void>;
+}
+
 export interface Variable {
   name: string;
   description: string;
@@ -418,6 +432,9 @@ export const PLUGIN_RPC_CONTEXT = {
 
   CHE_SIDERCAR_CONTENT_READER: createProxyIdentifier<CheSideCarContentReader>('CheSideCarContentReader'),
   CHE_SIDERCAR_CONTENT_READER_MAIN: createProxyIdentifier<CheSideCarContentReaderMain>('CheSideCarContentReaderMain'),
+
+  CHE_SIDECAR_FILE_SYSTEM: createProxyIdentifier<CheSideCarFileSystem>('CheSideCarFileSystemMain'),
+  CHE_SIDECAR_FILE_SYSTEM_MAIN: createProxyIdentifier<CheSideCarFileSystemMain>('CheSideCarFileSystemProviderMain'),
 
   CHE_LANGUAGES_TEST_API_MAIN: createProxyIdentifier<CheLanguagesTestAPI>('CheLanguagesTestAPI'),
 };
