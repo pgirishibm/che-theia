@@ -63,7 +63,10 @@ export class WebviewsContentAware {
           if (machineName) {
             console.log('++++++++++++++ perform replacing with machine name');
             // @ts-ignore
-            this._html = value.replace(/(?:vscode|theia)-resource:/gi, `file-sidecar-${machineName}:`);
+            // this._html = value.replace(/(?:vscode|theia)-resource:/gi, `file-sidecar-${machineName}:`);
+            this._html = value.replace(/(["'])(vscode|theia)-resource:(\/\/([^\s\/'"]+?)(?=\/))?([^\s'"]+?)(["'])/gi, (_, startQuote, resource, _1, scheme, path, endQuote) => {
+              return `${startQuote}${resource}-resource://${scheme ? scheme : machineName}${path}${endQuote}`;
+            });
           } else {
             console.log('++++++++++++++ left html value as is');
             // @ts-ignore
