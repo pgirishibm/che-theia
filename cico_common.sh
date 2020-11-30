@@ -18,6 +18,8 @@ function load_jenkins_vars() {
             CHE_BOT_GITHUB_TOKEN \
             QUAY_ECLIPSE_CHE_USERNAME \
             QUAY_ECLIPSE_CHE_PASSWORD \
+            RH_CHE_AUTOMATION_DOCKERHUB_USERNAME \
+            RH_CHE_AUTOMATION_DOCKERHUB_PASSWORD \
             CHE_NPM_AUTH_TOKEN \
             JENKINS_URL \
             GIT_BRANCH \
@@ -48,6 +50,14 @@ function install_deps() {
 
   service docker start
   echo 'CICO: Dependencies installed'
+}
+
+dockerLogin() {
+  if [ -n "${RH_CHE_AUTOMATION_DOCKERHUB_USERNAME}" ] && [ -n "${RH_CHE_AUTOMATION_DOCKERHUB_PASSWORD}" ]; then
+    docker login -u "${RH_CHE_AUTOMATION_DOCKERHUB_USERNAME}" -p "${RH_CHE_AUTOMATION_DOCKERHUB_PASSWORD}"
+  else
+    echo "Could not login, missing credentials for pushing to the docker.io"
+  fi
 }
 
 publishImagesOnQuay() {

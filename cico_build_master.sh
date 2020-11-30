@@ -29,6 +29,7 @@ install_deps
 set +x
 load_jenkins_vars
 set -x
+dockerLogin
 buildImages
 publishImagesOnQuay
 
