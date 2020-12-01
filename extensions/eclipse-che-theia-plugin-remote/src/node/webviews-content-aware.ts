@@ -67,9 +67,8 @@ export class WebviewsContentAware {
             this._html = value.replace(
               /(["'])(vscode|theia)-resource:(\/\/([^\s\/'"]+?)(?=\/))?([^\s'"]+?)(["'])/gi,
               (_, startQuote, resource, _1, scheme, path, endQuote) => {
-                return `${startQuote}${resource}-resource://${
-                  scheme ? scheme : `file-sidecar-${machineName}`
-                }${path}${endQuote}`;
+                const userScheme = scheme !== undefined ? scheme : `file-sidecar-${machineName}`;
+                return `${startQuote}${resource}-resource://${userScheme}${path}${endQuote}`;
               }
             );
           } else {
