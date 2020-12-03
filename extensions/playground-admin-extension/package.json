@@ -1,0 +1,36 @@
+{
+  "name": "playground-admin-extension",
+  "publisher": "ibm-playground",
+  "keywords": [
+    "theia-extension"
+  ],
+  "version": "0.0.0",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "dependencies": {
+    "@theia/core": "latest"
+  },
+  "devDependencies": {
+    "rimraf": "latest",
+    "typescript": "latest"
+  },
+  "engines": {
+    "vscode": "^1.51.0"
+  },
+
+
+  "scripts": {
+    "prepare": "yarn run clean && yarn run build",
+    "package-vsix:latest": "node src/package-vsix.js --tag latest",
+    "clean": "rimraf lib",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "theiaExtensions": [
+    {
+      "frontend": "lib/browser/playground-admin-extension-frontend-module"
+    }
+  ]
+}
