@@ -433,8 +433,8 @@ export const PLUGIN_RPC_CONTEXT = {
   CHE_SIDERCAR_CONTENT_READER: createProxyIdentifier<CheSideCarContentReader>('CheSideCarContentReader'),
   CHE_SIDERCAR_CONTENT_READER_MAIN: createProxyIdentifier<CheSideCarContentReaderMain>('CheSideCarContentReaderMain'),
 
-  CHE_SIDECAR_FILE_SYSTEM: createProxyIdentifier<CheSideCarFileSystem>('CheSideCarFileSystemMain'),
-  CHE_SIDECAR_FILE_SYSTEM_MAIN: createProxyIdentifier<CheSideCarFileSystemMain>('CheSideCarFileSystemProviderMain'),
+  CHE_SIDECAR_FILE_SYSTEM: createProxyIdentifier<CheSideCarFileSystem>('CheSideCarFileSystem'),
+  CHE_SIDECAR_FILE_SYSTEM_MAIN: createProxyIdentifier<CheSideCarFileSystemMain>('CheSideCarFileSystemMain'),
 
   CHE_LANGUAGES_TEST_API_MAIN: createProxyIdentifier<CheLanguagesTestAPI>('CheLanguagesTestAPI'),
 };

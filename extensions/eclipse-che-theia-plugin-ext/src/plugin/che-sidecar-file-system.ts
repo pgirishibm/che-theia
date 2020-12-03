@@ -51,9 +51,11 @@ export function createFileSystemProviderError(
 
 export class CheSideCarFileSystemImpl implements CheSideCarFileSystem {
   constructor(rpc: RPCProtocol) {
+    console.log('+++ plugin/che-sidecar-file-system.ts:54 CheSideCarFileSystemImpl > construct');
     const delegate = rpc.getProxy(PLUGIN_RPC_CONTEXT.CHE_SIDECAR_FILE_SYSTEM_MAIN);
     const machineName = process.env.CHE_MACHINE_NAME;
     if (machineName) {
+      console.log('+++ plugin/che-sidecar-file-system.ts:58 register scheme');
       delegate.$registerFileSystemProvider(`file-sidecar-${machineName}`);
     }
   }
@@ -67,9 +69,13 @@ export class CheSideCarFileSystemImpl implements CheSideCarFileSystem {
   }
 
   async $readFile(resource: string): Promise<Uint8Array> {
+    console.log('+++ plugin/che-sidecar-file-system.ts:72 $readFile for resource: ' + resource);
     const _uri = URI.parse(resource);
+    console.log('+++ plugin/che-sidecar-file-system.ts:72 $readFile parsed _uri: ' + JSON.stringify(_uri));
     try {
-      return await promisify(readFile)(_uri.fsPath);
+      const content = await promisify(readFile)(_uri.fsPath);
+      console.log('+++ plugin/che-sidecar-file-system.ts:77 $readFile content read: ' + content);
+      return content;
     } catch (error) {
       return Promise.reject(this.toFileSystemProviderError(error));
     }

@@ -32,9 +32,9 @@ export class CheSideCarFileSystemMainImpl implements CheSideCarFileSystemMain {
   private readonly fileService: FileService;
 
   constructor(container: interfaces.Container, rpc: RPCProtocol) {
+    console.log('+++ che-sidecar-file-system-main.ts:35 constructor called');
     this.delegate = rpc.getProxy(PLUGIN_RPC_CONTEXT.CHE_SIDECAR_FILE_SYSTEM);
     this.fileService = container.get(FileService);
-    // this.registry = container.get(CheSideCarContentReaderRegistry);
   }
 
   $disposeFileSystemProvider(scheme: string): Promise<void> {
@@ -47,6 +47,7 @@ export class CheSideCarFileSystemMainImpl implements CheSideCarFileSystemMain {
   }
 
   $registerFileSystemProvider(scheme: string): Promise<void> {
+    console.log('+++ che-sidecar-file-system-main.ts:50 $registerFileSystemProvider scheme: ' + scheme);
     const provider = new CheSideCarFileSystemProvider(this.delegate, FileSystemProviderCapabilities.FileReadWrite);
     const disposable = this.fileService.registerProvider(scheme, provider);
     this.registrations.set(scheme, disposable);
@@ -58,7 +59,6 @@ type IDisposable = Disposable;
 
 export class CheSideCarFileSystemProvider implements FileSystemProviderWithFileReadWriteCapability {
   private readonly _onDidChange = new Emitter<readonly FileChange[]>();
-  // private readonly _registration: Disposable;
   private readonly delegate: CheSideCarFileSystem;
 
   readonly onDidChangeFile: Event<readonly FileChange[]> = this._onDidChange.event;
@@ -68,9 +68,9 @@ export class CheSideCarFileSystemProvider implements FileSystemProviderWithFileR
   readonly onDidChangeCapabilities: Event<void> = Event.None;
 
   constructor(delegate: CheSideCarFileSystem, capabilities: FileSystemProviderCapabilities) {
+    console.log('+++ che-sidecar-file-system-main.ts:71 CheSideCarFileSystemProvider > constructor');
     this.capabilities = capabilities;
     this.delegate = delegate;
-    // this._registration = fileService.registerProvider(scheme, this);
   }
 
   watch(resource: URI, opts: WatchOptions): IDisposable {
@@ -99,11 +99,14 @@ export class CheSideCarFileSystemProvider implements FileSystemProviderWithFileR
   }
 
   async readFile(resource: URI): Promise<Uint8Array> {
-    return await this.delegate.$readFile(resource.toString());
+    console.log('+++ che-sidecar-file-system-main.ts:102 CheSideCarFileSystemProvider > readFile for resource: ' + JSON.stringify(resource));
+    const content = await this.delegate.$readFile(resource.path.toString());
+    console.log('+++ che-sidecar-file-system-main.ts:102 CheSideCarFileSystemProvider > readFile content: ' + content);
+    return content;
   }
 
   async writeFile(resource: URI, content: Uint8Array, opts: FileWriteOptions): Promise<void> {
-    return await this.delegate.$writeFile(resource.toString(), content, {
+    return await this.delegate.$writeFile(resource.path.toString(), content, {
       overwrite: opts.overwrite,
       create: opts.create,
     });
