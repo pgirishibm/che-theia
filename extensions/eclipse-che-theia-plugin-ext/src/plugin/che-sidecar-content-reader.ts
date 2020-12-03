@@ -17,9 +17,11 @@ import { URI } from 'vscode-uri';
 
 export class CheSideCarContentReaderImpl implements CheSideCarContentReader {
   constructor(rpc: RPCProtocol) {
+    console.log('+++ plugin/che-sidecar-content-reader.ts:20 CheSideCarContentReaderImpl > constructor');
     const delegate = rpc.getProxy(PLUGIN_RPC_CONTEXT.CHE_SIDERCAR_CONTENT_READER_MAIN);
     const machineName = process.env.CHE_MACHINE_NAME;
     if (machineName) {
+      console.log('+++ plugin/che-sidecar-content-reader.ts:24 register scheme');
       delegate.$registerContentReader(`file-sidecar-${machineName}`);
     }
   }

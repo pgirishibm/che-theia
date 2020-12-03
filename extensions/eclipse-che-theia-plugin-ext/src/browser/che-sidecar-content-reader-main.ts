@@ -23,11 +23,13 @@ export class CheSideCarContentReaderMainImpl implements CheSideCarContentReaderM
   private readonly registry: CheSideCarContentReaderRegistry;
 
   constructor(container: interfaces.Container, rpc: RPCProtocol) {
+    console.log('+++ che-sidecar-content-reader-main.ts:26 CheSideCarContentReaderMainImpl > constructor');
     this.delegate = rpc.getProxy(PLUGIN_RPC_CONTEXT.CHE_SIDERCAR_CONTENT_READER);
     this.registry = container.get(CheSideCarContentReaderRegistry);
   }
 
   async $registerContentReader(scheme: string): Promise<void> {
+    console.log('+++ che-sidecar-content-reader-main.ts:32 register scheme: ' + scheme);
     this.registry.register(
       scheme,
       async (uri, options?: { encoding?: string }) => await this.delegate.$read(uri, options)
