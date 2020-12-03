@@ -99,7 +99,10 @@ export class CheSideCarFileSystemProvider implements FileSystemProviderWithFileR
   }
 
   async readFile(resource: URI): Promise<Uint8Array> {
-    console.log('+++ che-sidecar-file-system-main.ts:102 CheSideCarFileSystemProvider > readFile for resource: ' + JSON.stringify(resource));
+    console.log(
+      '+++ che-sidecar-file-system-main.ts:102 CheSideCarFileSystemProvider > readFile for resource: ' +
+        JSON.stringify(resource)
+    );
     const content = await this.delegate.$readFile(resource.path.toString());
     console.log('+++ che-sidecar-file-system-main.ts:102 CheSideCarFileSystemProvider > readFile content: ' + content);
     return content;
