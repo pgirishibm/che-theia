@@ -2333,7 +2333,7 @@
     fuzzy "^0.1.3"
     vscode-ripgrep "^1.2.4"
 
-"@theia/filesystem@1.8.0-next.16fec095":
+"@theia/filesystem@1.8.0-next.16fec095", "@theia/filesystem@next":
   version "1.8.0-next.16fec095"
   resolved "https://registry.yarnpkg.com/@theia/filesystem/-/filesystem-1.8.0-next.16fec095.tgz#236619ca9f638955b0f4277c011d5b5b1a26f6f4"
   integrity sha512-yNr+4jGHNIP31zgdlhinQ/GOGgwAdNGOtkfkEkNxP9G0lA4w11VfsmbrlAcSvcZsG2PBy+djNH9P4VzXh6JixA==
